@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from blog.models import BlogModel
 from blog.serialiser import BlogSerializer
 from django.http import HttpResponse
+from django.db.models import Q
 
 # Create your views here.
 
@@ -26,6 +27,13 @@ def AddPost(request):
             return HttpResponse(json.dumps({"status":"Success"}))
         else:
             return HttpResponse(json.dumps({"status":"Failed"}))
-
+        
+@csrf_exempt
+def ViewMyPost(request):
+    if request.method=="POST":
+        recieved_data=json.loads(request.body)
+        getUser_id=recieved_data["user_id"]
+        data=list(BlogModel.objects.filter(Q(use_id__icontains=getUser_id)).values())
+        return HttpResponse(json.dumps(data))
     
 
