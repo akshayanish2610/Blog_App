@@ -1,8 +1,8 @@
 from django.shortcuts import render
 import json
 from django.views.decorators.csrf import csrf_exempt
-from blog.models import BlogModel
-from blog.serialiser import BlogSerializer
+from blog.models import BlogModel,BlogRegistration
+from blog.serialiser import BlogSerializer,RegSerializer
 from django.http import HttpResponse
 from django.db.models import Q
 
@@ -37,3 +37,14 @@ def ViewMyPost(request):
         return HttpResponse(json.dumps(data))
     
 
+@csrf_exempt
+def Registration(request):
+    if request.method == "POST":
+        recievedData=json.loads(request.body)
+        print(recievedData)
+        serializer_check=RegSerializer(data=recievedData)
+        if serializer_check.is_valid():
+            serializer_check.save()
+            return HttpResponse(json.dumps({"status":"Success"}))
+        else:
+            return HttpResponse(json.dumps({"status":"Failed"}))
