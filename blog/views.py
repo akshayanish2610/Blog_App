@@ -48,3 +48,8 @@ def Registration(request):
             return HttpResponse(json.dumps({"status":"Success"}))
         else:
             return HttpResponse(json.dumps({"status":"Failed"}))
+        
+@csrf_exempt
+def Login(request):
+    if request.method =="POST":
+        return HttpResponse(json.dumps({"status":"Success"}))
