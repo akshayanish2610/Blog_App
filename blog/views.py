@@ -15,6 +15,17 @@ def Viewall(request):
         return HttpResponse(json.dumps(serialise_data.data))
     
 
+@csrf_exempt
+def AddPost(request):
+    if request.method == "POST":
+        recievedData=json.loads(request.body)
+        print(recievedData)
+        serializer_check=BlogSerializer(data=recievedData)
+        if serializer_check.is_valid():
+            serializer_check.save()
+            return HttpResponse(json.dumps({"status":"Success"}))
+        else:
+            return HttpResponse(json.dumps({"status":"Failed"}))
 
     
 
