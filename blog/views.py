@@ -33,7 +33,7 @@ def ViewMyPost(request):
     if request.method=="POST":
         recieved_data=json.loads(request.body)
         getUser_id=recieved_data["user_id"]
-        data=list(BlogModel.objects.filter(Q(use_id__icontains=getUser_id)).values())
+        data=list(BlogModel.objects.filter(Q(user_id__icontains=getUser_id)).values())
         return HttpResponse(json.dumps(data))
     
 
